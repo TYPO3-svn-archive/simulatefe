@@ -59,11 +59,7 @@ class Tx_Simulatefe_Controller_UserController extends Tx_Extbase_MVC_Controller_
 		$users = $this->userRepository->findBySettings($this->settings);
 		$this->view->assign('users', $users);
 		$this->view->assign('currentUser', $GLOBALS["TSFE"]->fe_user->user);
-		if($GLOBALS['BE_USER'] && $GLOBALS['BE_USER']->isAdmin()) {
-			$this->view->assign('allUsersMaySwitchUser', $GLOBALS['BE_USER']->isAdmin());
-		} else {
-			$this->view->assign('allUsersMaySwitchUser', $this->settings['allUsersMaySwitchUser']);
-		}
+		$this->view->assign('allUsersMaySwitchUser', $this->checkPermissions());
 	}
 	/**
 	 * switch to the specific user
@@ -73,7 +69,7 @@ class Tx_Simulatefe_Controller_UserController extends Tx_Extbase_MVC_Controller_
 	 * return void
 	 */
 	public function switchAction(Tx_Simulatefe_Domain_Model_User $user) {
-		if($GLOBALS['BE_USER'] && $GLOBALS['BE_USER']->isAdmin() || $this->settings['allUsersMaySwitchUser']) {
+		if($this->checkPermissions()) {
 			$fe_user = t3lib_BEfunc::getRecord('fe_users', $user->getUid());
 			$GLOBALS['TSFE']->fe_user->createUserSession($fe_user);
 		} else {
@@ -86,6 +82,22 @@ class Tx_Simulatefe_Controller_UserController extends Tx_Extbase_MVC_Controller_
 	public function logoutAction() {
 		$GLOBALS['TSFE']->fe_user->logoff();
 		$this->redirect('list');
+	}
+
+	protected function checkPermissions() {
+		switch($this->settings['securityConcept']) {
+			case 'group':
+				foreach($GLOBALS['TSFE']->fe_user->groupData['uid'] as $groupUid) {
+					if(t3lib_div::inList($groupUid, $this->settings['securityGroupList'])) {
+						return true;
+					}
+				}
+			break;
+			case 'admin':
+			default:
+				return $GLOBALS['BE_USER'] && $GLOBALS['BE_USER']->isAdmin();
+			break;
+		}
 	}
 
 }

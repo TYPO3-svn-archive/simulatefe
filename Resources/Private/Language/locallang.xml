@@ -8,10 +8,14 @@
 		<languageKey index="default" type="array">
 			<label index="selectuser">Select frontend user</label>
 			<label index="logout">logout</label>
+			<label index="collapse">Hide user list</label>
+			<label index="uncollapse">Show user list</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="selectuser">Benutzer wählen</label>
 			<label index="logout">abmelden</label>
+			<label index="collapse">Verstecke Nutzerliste</label>
+			<label index="uncollapse">Zeige Nutzerliste</label>
 		</languageKey>
 	</data>
 </T3locallang>
