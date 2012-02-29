@@ -11,7 +11,7 @@
 		padding: 5px;
 		z-index: 999999;
 		height:20px;
-		width: 400px;
+		width: 200px;
 		color: black;
 		font-size: 12px;
 	}
@@ -24,10 +24,12 @@
 		display:none;
 		height: 95%;
 	}
+	div#tx_simulatefeWrapper div {
+		text-align: left;
+	}
 	div#tx_simulatefe ul li {
 		list-style: circle;
 		display:block;
-		text-align: left;
 	}
 	div#tx_simulatefe ul li a{
 		display: block;
